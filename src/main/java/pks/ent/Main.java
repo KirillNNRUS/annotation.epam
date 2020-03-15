@@ -10,5 +10,8 @@ public class Main {
         child.setChildName("Dariya");
         child.setYearOfBirthday(2012);
         System.out.println(child);
+
+        ChildDTO childDTO = new ChildDTO(child);
+        System.out.println(childDTO.getChild());
     }
 }
