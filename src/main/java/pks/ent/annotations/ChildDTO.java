@@ -1,4 +1,4 @@
-package pks.ent;
+package pks.ent.annotations;
 
 import lombok.Value;
 

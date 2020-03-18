@@ -1,5 +1,9 @@
 package pks.ent;
 
+import pks.ent.annotations.Child;
+import pks.ent.annotations.ChildDTO;
+import pks.ent.annotations.Parent;
+
 public class Main {
     public static void main(String[] args) {
         Parent parent = new Parent();
@@ -13,5 +17,7 @@ public class Main {
 
         ChildDTO childDTO = new ChildDTO(child);
         System.out.println(childDTO.getChild());
+
+
     }
 }
