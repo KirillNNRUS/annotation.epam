@@ -3,6 +3,10 @@ package pks.ent;
 import pks.ent.annotations.Child;
 import pks.ent.annotations.ChildDTO;
 import pks.ent.annotations.Parent;
+import pks.ent.reflection.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -18,6 +22,46 @@ public class Main {
         ChildDTO childDTO = new ChildDTO(child);
         System.out.println(childDTO.getChild());
 
+        List<Object> objectArrayList = new ArrayList<Object>();
+        objectArrayList.add(new SimpleClassFirst());
+        objectArrayList.add(new SimpleClassFirstChild());
+        objectArrayList.add(new SimpleClassSecond());
+        objectArrayList.add(new SimpleClassSecondChild());
+        objectArrayList.add(new SimpleClassThird());
+        objectArrayList.add(new SimpleClassThirdChild());
+        objectArrayList.add(new SimpleClassFourth());
+        objectArrayList.add(new SimpleClassFourthChild());
+        objectArrayList.add(new SimpleClassFourthSecondChild());
 
+        printClassIsDeprecated(objectArrayList);
+    }
+
+    static Class getClass(Object object) {
+        return object.getClass();
+    }
+
+    static Class getSuperClass(Object object) {
+        return getClass(object).getSuperclass();
+    }
+
+    static void printAnotherChildSuperClass(List<Object> list, Class parent) {
+        for (Object object : list) {
+            if (getSuperClass(object) == parent) {
+                System.out.println(object.getClass());
+            }
+        }
+    }
+
+    static void printClassIsDeprecated(List<Object> list) {
+        for (Object object : list) {
+            if (getClass(object).isAnnotationPresent(Deprecated.class)) {
+                System.out.println(getClass(object) + " is Deprecated");
+                if (getSuperClass(object) != Object.class) {
+                    System.out.println("Try to use Parent " + getSuperClass(object));
+                    System.out.println("Or try to use another child of the " + getSuperClass(object) + ":");
+                    printAnotherChildSuperClass(list, getSuperClass(object));
+                }
+            }
+        }
     }
 }
