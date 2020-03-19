@@ -44,10 +44,11 @@ public class Main {
         return getClass(object).getSuperclass();
     }
 
-    static void printAnotherChildSuperClass(List<Object> list, Class parent) {
+    static void printAnotherNotDeprecatedChildSuperClass(List<Object> list, Class parent) {
         for (Object object : list) {
-            if (getSuperClass(object) == parent) {
-                System.out.println(object.getClass());
+            if (getSuperClass(object) == parent &&
+                    !getClass(object).isAnnotationPresent(Deprecated.class)) {
+                System.out.println(getClass(object));
             }
         }
     }
@@ -59,7 +60,7 @@ public class Main {
                 if (getSuperClass(object) != Object.class) {
                     System.out.println("Try to use Parent " + getSuperClass(object));
                     System.out.println("Or try to use another child of the " + getSuperClass(object) + ":");
-                    printAnotherChildSuperClass(list, getSuperClass(object));
+                    printAnotherNotDeprecatedChildSuperClass(list, getSuperClass(object));
                 }
             }
         }
