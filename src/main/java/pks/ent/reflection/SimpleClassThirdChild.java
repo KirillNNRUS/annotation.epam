@@ -1,6 +1,6 @@
 package pks.ent.reflection;
 
-public class SimpleClassThirdChild extends SimpleClassThird implements SimpleMethod {
+public class SimpleClassThirdChild extends SimpleClassThird implements SimpleInterface {
     @Override
     void print() {
         System.out.println("SimpleClassThirdChild is here");

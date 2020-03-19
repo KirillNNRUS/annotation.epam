@@ -1,6 +1,7 @@
 package pks.ent.reflection;
 
-public class SimpleClassThird {
+@Deprecated
+public class SimpleClassThird implements SimpleInterface, SimpleInterfaceSecond {
 
     @Deprecated
     void print() {

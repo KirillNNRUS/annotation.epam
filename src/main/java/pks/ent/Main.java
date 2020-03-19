@@ -22,7 +22,7 @@ public class Main {
         ChildDTO childDTO = new ChildDTO(child);
         System.out.println(childDTO.getChild());
 
-        List<Object> objectArrayList = new ArrayList<Object>();
+        List<Object> objectArrayList = new ArrayList<>();
         objectArrayList.add(new SimpleClassFirst());
         objectArrayList.add(new SimpleClassFirstChild());
         objectArrayList.add(new SimpleClassSecond());
@@ -56,12 +56,22 @@ public class Main {
     static void printClassIsDeprecated(List<Object> list) {
         for (Object object : list) {
             if (getClass(object).isAnnotationPresent(Deprecated.class)) {
+                System.out.println("");
                 System.out.println(getClass(object) + " is Deprecated");
                 if (getSuperClass(object) != Object.class) {
                     System.out.println("Try to use Parent " + getSuperClass(object));
-                    System.out.println("Or try to use another child of the " + getSuperClass(object) + ":");
+                    System.out.println("Or try to use another Child of the " + getSuperClass(object) + ":");
                     printAnotherNotDeprecatedChildSuperClass(list, getSuperClass(object));
                 }
+                /*
+                Может и зря, но сделал проверку, нет ли не Deprecated детей у класса родителя,
+                и предложение использовать их.
+                 */
+                if (getSuperClass(object) == Object.class) {
+                    System.out.println("Try to use Child of the " + getClass(object) + ":");
+                    printAnotherNotDeprecatedChildSuperClass(list, getClass(object));
+                }
+
             }
         }
     }
