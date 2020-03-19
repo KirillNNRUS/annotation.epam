@@ -10,7 +10,7 @@ import java.util.*;
 public class Main {
     static List<Object> interfaceList = Collections.EMPTY_LIST;
     static List<Object> objectArrayList = Collections.EMPTY_LIST;
-    static Map<Object, HashSet<Object>> mapClassAndInterfaces = new HashMap<>();
+    static Map<Object, HashSet<Object>> mapClassAndInterfaces = new LinkedHashMap<>();
 
     public static void main(String[] args) {
         Parent parent = new Parent();
@@ -72,10 +72,11 @@ public class Main {
     }
 
     static void printAnotherClassWithAllInterfaces(Object object) {
-        //Деалю List интерфейсов для конкретного класса
+        //Делаю List интерфейсов для конкретного класса
         setInterfaceList(object);
-
-
+        /*
+        Чего делать дальше не могу придумать.
+         */
     }
 
     static void printClassIsDeprecated(List<Object> list) {
