@@ -6,6 +6,7 @@ import pks.ent.annotations.Parent;
 import pks.ent.reflection.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
     static List<Class<?>> interfaceList = Collections.EMPTY_LIST;
@@ -36,7 +37,6 @@ public class Main {
 //        objectArrayList.add(new SimpleClassFourthSecondChild()); //9
 
 
-
         System.out.println("!!!!!");
         addValuesToMultiMap(new SimpleClassFirst()); //1
         addValuesToMultiMap(new SimpleClassFirstChild()); //2
@@ -50,11 +50,11 @@ public class Main {
 
 //        System.out.println(Arrays.asList(mapClassAndInterfaces.entrySet().toArray()));
         addValueToObjectArrayList();
+//        System.out.println(objectArrayList.toString());
         printClassIsDeprecated(objectArrayList);
 //        printClassIsDeprecated(mapClassAndInterfaces.keySet().stream());
         System.out.println("-=!!!!=-");
     }
-
 
 
     static void addValuesToMultiMap(Object object) {
@@ -63,9 +63,7 @@ public class Main {
     }
 
     static void addValueToObjectArrayList() {
-        for (Object object : mapClassAndInterfaces.entrySet()) {
-            objectArrayList.add( object);
-        }
+        objectArrayList = new ArrayList<>(mapClassAndInterfaces.keySet());
     }
 
     static Class getClass(Object object) {
@@ -89,8 +87,8 @@ public class Main {
         interfaceList = Arrays.asList(object.getClass().getInterfaces());
     }
 
-    static void printAnotherClassWithInterface(Class deprecated) {
-        setInterfaceList(deprecated);
+    static void printAnotherClassWithInterface(Class sClass) {
+        setInterfaceList(sClass);
 
         if (interfaceList != Collections.EMPTY_LIST) {
             for (Class c : interfaceList) {
@@ -117,7 +115,7 @@ public class Main {
                     System.out.println("Try to use Child of the " + getClass(object) + ":");
                     printAnotherNotDeprecatedChildSuperClass(list, getClass(object));
                 }
-                printAnotherClassWithInterface(getClass(object));
+//                printAnotherClassWithInterface(getClass(object));
             }
         }
     }
