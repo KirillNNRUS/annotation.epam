@@ -1,17 +1,17 @@
 package pks.ent;
 
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import pks.ent.annotations.Child;
 import pks.ent.annotations.ChildDTO;
 import pks.ent.annotations.Parent;
 import pks.ent.reflection.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Main {
+    static List<Class<?>> interfaceList = Collections.EMPTY_LIST;
+    static List<Object> objectArrayList = Collections.EMPTY_LIST;
+    static Map<Object, HashSet<Object>> mapClassAndInterfaces = new HashMap<>();
+
     public static void main(String[] args) {
         Parent parent = new Parent();
         parent.setName("Kirill");
@@ -25,21 +25,47 @@ public class Main {
         ChildDTO childDTO = new ChildDTO(child);
         System.out.println(childDTO.getChild());
 
-        List<Object> objectArrayList = new ArrayList<>();
-        objectArrayList.add(new SimpleClassFirst());
-        objectArrayList.add(new SimpleClassFirstChild());
-        objectArrayList.add(new SimpleClassSecond());
-        objectArrayList.add(new SimpleClassSecondChild());
-        objectArrayList.add(new SimpleClassThird());
-        objectArrayList.add(new SimpleClassThirdChild());
-        objectArrayList.add(new SimpleClassFourth());
-        objectArrayList.add(new SimpleClassFourthChild());
-        objectArrayList.add(new SimpleClassFourthSecondChild());
-
-        List<Object> interfaceList = new ArrayList<>();
+//        objectArrayList.add(new SimpleClassFirst()); //1
+//        objectArrayList.add(new SimpleClassFirstChild()); //2
+//        objectArrayList.add(new SimpleClassSecond()); //3
+//        objectArrayList.add(new SimpleClassSecondChild()); //4
+//        objectArrayList.add(new SimpleClassThird()); //5
+//        objectArrayList.add(new SimpleClassThirdChild()); //6
+//        objectArrayList.add(new SimpleClassFourth()); //7
+//        objectArrayList.add(new SimpleClassFourthChild()); //8
+//        objectArrayList.add(new SimpleClassFourthSecondChild()); //9
 
 
+
+        System.out.println("!!!!!");
+        addValuesToMultiMap(new SimpleClassFirst()); //1
+        addValuesToMultiMap(new SimpleClassFirstChild()); //2
+        addValuesToMultiMap(new SimpleClassSecond()); //3
+        addValuesToMultiMap(new SimpleClassSecondChild()); //4
+        addValuesToMultiMap(new SimpleClassThird()); //5
+        addValuesToMultiMap(new SimpleClassThirdChild()); //6
+        addValuesToMultiMap(new SimpleClassFourth()); //7
+        addValuesToMultiMap(new SimpleClassFourthChild()); //8
+        addValuesToMultiMap(new SimpleClassFourthSecondChild()); //9
+
+//        System.out.println(Arrays.asList(mapClassAndInterfaces.entrySet().toArray()));
+        addValueToObjectArrayList();
         printClassIsDeprecated(objectArrayList);
+//        printClassIsDeprecated(mapClassAndInterfaces.keySet().stream());
+        System.out.println("-=!!!!=-");
+    }
+
+
+
+    static void addValuesToMultiMap(Object object) {
+        setInterfaceList(object);
+        mapClassAndInterfaces.put(object, new HashSet<>(interfaceList));
+    }
+
+    static void addValueToObjectArrayList() {
+        for (Object object : mapClassAndInterfaces.entrySet()) {
+            objectArrayList.add( object);
+        }
     }
 
     static Class getClass(Object object) {
@@ -55,6 +81,20 @@ public class Main {
             if (getSuperClass(object) == parent &&
                     !getClass(object).isAnnotationPresent(Deprecated.class)) {
                 System.out.println(getClass(object));
+            }
+        }
+    }
+
+    static void setInterfaceList(Object object) {
+        interfaceList = Arrays.asList(object.getClass().getInterfaces());
+    }
+
+    static void printAnotherClassWithInterface(Class deprecated) {
+        setInterfaceList(deprecated);
+
+        if (interfaceList != Collections.EMPTY_LIST) {
+            for (Class c : interfaceList) {
+                System.out.println(c);
             }
         }
     }
@@ -77,12 +117,7 @@ public class Main {
                     System.out.println("Try to use Child of the " + getClass(object) + ":");
                     printAnotherNotDeprecatedChildSuperClass(list, getClass(object));
                 }
-
-                List<Class<?>> tempList = Arrays.asList(getClass(object).getInterfaces());
-                Class[] temp = getClass(object).getInterfaces();
-
-                if (tempList != Collections.EMPTY_LIST) {
-                }
+                printAnotherClassWithInterface(getClass(object));
             }
         }
     }
