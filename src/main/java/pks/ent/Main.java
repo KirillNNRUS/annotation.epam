@@ -6,10 +6,9 @@ import pks.ent.annotations.Parent;
 import pks.ent.reflection.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Main {
-    static List<Class<?>> interfaceList = Collections.EMPTY_LIST;
+    static List<Object> interfaceList = Collections.EMPTY_LIST;
     static List<Object> objectArrayList = Collections.EMPTY_LIST;
     static Map<Object, HashSet<Object>> mapClassAndInterfaces = new HashMap<>();
 
@@ -26,38 +25,23 @@ public class Main {
         ChildDTO childDTO = new ChildDTO(child);
         System.out.println(childDTO.getChild());
 
-//        objectArrayList.add(new SimpleClassFirst()); //1
-//        objectArrayList.add(new SimpleClassFirstChild()); //2
-//        objectArrayList.add(new SimpleClassSecond()); //3
-//        objectArrayList.add(new SimpleClassSecondChild()); //4
-//        objectArrayList.add(new SimpleClassThird()); //5
-//        objectArrayList.add(new SimpleClassThirdChild()); //6
-//        objectArrayList.add(new SimpleClassFourth()); //7
-//        objectArrayList.add(new SimpleClassFourthChild()); //8
-//        objectArrayList.add(new SimpleClassFourthSecondChild()); //9
-
-
         System.out.println("!!!!!");
-        addValuesToMultiMap(new SimpleClassFirst()); //1
-        addValuesToMultiMap(new SimpleClassFirstChild()); //2
-        addValuesToMultiMap(new SimpleClassSecond()); //3
-        addValuesToMultiMap(new SimpleClassSecondChild()); //4
-        addValuesToMultiMap(new SimpleClassThird()); //5
-        addValuesToMultiMap(new SimpleClassThirdChild()); //6
-        addValuesToMultiMap(new SimpleClassFourth()); //7
-        addValuesToMultiMap(new SimpleClassFourthChild()); //8
-        addValuesToMultiMap(new SimpleClassFourthSecondChild()); //9
+        addValuesToMapClassAndInterfaces(new SimpleClassFirst()); //1
+        addValuesToMapClassAndInterfaces(new SimpleClassFirstChild()); //2
+        addValuesToMapClassAndInterfaces(new SimpleClassSecond()); //3
+        addValuesToMapClassAndInterfaces(new SimpleClassSecondChild()); //4
+        addValuesToMapClassAndInterfaces(new SimpleClassThird()); //5
+        addValuesToMapClassAndInterfaces(new SimpleClassThirdChild()); //6
+        addValuesToMapClassAndInterfaces(new SimpleClassFourth()); //7
+        addValuesToMapClassAndInterfaces(new SimpleClassFourthChild()); //8
+        addValuesToMapClassAndInterfaces(new SimpleClassFourthSecondChild()); //9
 
-//        System.out.println(Arrays.asList(mapClassAndInterfaces.entrySet().toArray()));
         addValueToObjectArrayList();
-//        System.out.println(objectArrayList.toString());
         printClassIsDeprecated(objectArrayList);
-//        printClassIsDeprecated(mapClassAndInterfaces.keySet().stream());
         System.out.println("-=!!!!=-");
     }
 
-
-    static void addValuesToMultiMap(Object object) {
+    static void addValuesToMapClassAndInterfaces(Object object) {
         setInterfaceList(object);
         mapClassAndInterfaces.put(object, new HashSet<>(interfaceList));
     }
@@ -84,17 +68,14 @@ public class Main {
     }
 
     static void setInterfaceList(Object object) {
-        interfaceList = Arrays.asList(object.getClass().getInterfaces());
+        interfaceList = Arrays.asList((Object) object.getClass().getInterfaces());
     }
 
-    static void printAnotherClassWithInterface(Class sClass) {
-        setInterfaceList(sClass);
+    static void printAnotherClassWithAllInterfaces(Object object) {
+        //Деалю List интерфейсов для конкретного класса
+        setInterfaceList(object);
 
-        if (interfaceList != Collections.EMPTY_LIST) {
-            for (Class c : interfaceList) {
-                System.out.println(c);
-            }
-        }
+
     }
 
     static void printClassIsDeprecated(List<Object> list) {
@@ -115,7 +96,7 @@ public class Main {
                     System.out.println("Try to use Child of the " + getClass(object) + ":");
                     printAnotherNotDeprecatedChildSuperClass(list, getClass(object));
                 }
-//                printAnotherClassWithInterface(getClass(object));
+                printAnotherClassWithAllInterfaces(object);
             }
         }
     }
