@@ -1,11 +1,14 @@
 package pks.ent;
 
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import pks.ent.annotations.Child;
 import pks.ent.annotations.ChildDTO;
 import pks.ent.annotations.Parent;
 import pks.ent.reflection.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Main {
@@ -32,6 +35,9 @@ public class Main {
         objectArrayList.add(new SimpleClassFourth());
         objectArrayList.add(new SimpleClassFourthChild());
         objectArrayList.add(new SimpleClassFourthSecondChild());
+
+        List<Object> interfaceList = new ArrayList<>();
+
 
         printClassIsDeprecated(objectArrayList);
     }
@@ -72,6 +78,11 @@ public class Main {
                     printAnotherNotDeprecatedChildSuperClass(list, getClass(object));
                 }
 
+                List<Class<?>> tempList = Arrays.asList(getClass(object).getInterfaces());
+                Class[] temp = getClass(object).getInterfaces();
+
+                if (tempList != Collections.EMPTY_LIST) {
+                }
             }
         }
     }
