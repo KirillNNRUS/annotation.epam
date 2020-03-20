@@ -3,14 +3,18 @@ package pks.ent;
 import pks.ent.annotations.Child;
 import pks.ent.annotations.ChildDTO;
 import pks.ent.annotations.Parent;
-import pks.ent.reflection.*;
+import pks.ent.reflection.SimpleClassThird;
+import pks.ent.reflection.SimpleClassThirdChild;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Main {
-    static List<Object> interfaceList = Collections.EMPTY_LIST;
-    static List<Object> objectArrayList = Collections.EMPTY_LIST;
-    static Map<Object, HashSet<Object>> mapClassAndInterfaces = new LinkedHashMap<>();
+    static List<Object> interfaceList = new ArrayList<>();
+    static Class[] interfaceArrayOfDeprecatedClass = null;
+    static Class[] interfaceArrayOfCompareClass = null;
+    static List<Object> mainClassList = new ArrayList<>();
 
     public static void main(String[] args) {
         Parent parent = new Parent();
@@ -26,28 +30,22 @@ public class Main {
         System.out.println(childDTO.getChild());
 
         System.out.println("!!!!!");
-        addValuesToMapClassAndInterfaces(new SimpleClassFirst()); //1
-        addValuesToMapClassAndInterfaces(new SimpleClassFirstChild()); //2
-        addValuesToMapClassAndInterfaces(new SimpleClassSecond()); //3
-        addValuesToMapClassAndInterfaces(new SimpleClassSecondChild()); //4
-        addValuesToMapClassAndInterfaces(new SimpleClassThird()); //5
-        addValuesToMapClassAndInterfaces(new SimpleClassThirdChild()); //6
-        addValuesToMapClassAndInterfaces(new SimpleClassFourth()); //7
-        addValuesToMapClassAndInterfaces(new SimpleClassFourthChild()); //8
-        addValuesToMapClassAndInterfaces(new SimpleClassFourthSecondChild()); //9
+//        addValueToMainClassList(new SimpleClassFirst()); //1
+//        addValueToMainClassList(new SimpleClassFirstChild()); //2
+//        addValueToMainClassList(new SimpleClassSecond()); //3
+//        addValueToMainClassList(new SimpleClassSecondChild()); //4
+        addValueToMainClassList(new SimpleClassThird()); //5
+        addValueToMainClassList(new SimpleClassThirdChild()); //6
+//        addValueToMainClassList(new SimpleClassFourth()); //7
+//        addValueToMainClassList(new SimpleClassFourthChild()); //8
+//        addValueToMainClassList(new SimpleClassFourthSecondChild()); //9
 
-        addValueToObjectArrayList();
-        printClassIsDeprecated(objectArrayList);
+        printClassIsDeprecated(mainClassList);
         System.out.println("-=!!!!=-");
     }
 
-    static void addValuesToMapClassAndInterfaces(Object object) {
-        setInterfaceList(object);
-        mapClassAndInterfaces.put(object, new HashSet<>(interfaceList));
-    }
-
-    static void addValueToObjectArrayList() {
-        objectArrayList = new ArrayList<>(mapClassAndInterfaces.keySet());
+    static void addValueToMainClassList(Object object) {
+        mainClassList.add(object);
     }
 
     static Class getClass(Object object) {
@@ -71,12 +69,22 @@ public class Main {
         interfaceList = Arrays.asList((Object) object.getClass().getInterfaces());
     }
 
+    static Class[] setInterfaceArray(Object object) {
+        return object.getClass().getInterfaces();
+    }
+
     static void printAnotherClassWithAllInterfaces(Object object) {
-        //Делаю List интерфейсов для конкретного класса
-        setInterfaceList(object);
-        /*
-        Чего делать дальше не могу придумать.
-         */
+        //Делаю Array интерфейсов для конкретного класса
+        interfaceArrayOfDeprecatedClass = setInterfaceArray(object);
+        int contInterfaceOfOfDeprecatedClass = interfaceArrayOfDeprecatedClass.length;
+        for (Class aClass : interfaceArrayOfDeprecatedClass) {
+            for (Object objFromMainClassList : mainClassList) {
+                if (object == objFromMainClassList) {
+                    break;
+                }
+            }
+        }
+
     }
 
     static void printClassIsDeprecated(List<Object> list) {
